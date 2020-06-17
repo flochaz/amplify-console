@@ -1,18 +1,18 @@
 version: 0.2
-
 phases:
-  pre_build:
+  install:
     commands:
-      - echo Logging in to Amazon ECR...
-      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      # Installs the npm dependencies as defined by the `package.json` file
+      # present in the root directory of the package
+      # (`cdk init app --language=typescript` would have created one for you)
+      - npm install
   build:
     commands:
-      - echo Build started on `date`
-      - echo Building the Docker image...          
-      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
-      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG      
-  post_build:
-    commands:
-      - echo Build completed on `date`
-      - echo Pushing the Docker image...
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      # Builds the CDK App so it can be synthesized
+      - npm run build
+      # Synthesizes the CDK App and puts the resulting artifacts into `dist`
+      - npm run cdk synth -- -o dist
+artifacts:
+  # The output artifact is all the files in the `dist` directory
+  base-directory: dist
+  files: '**/*'

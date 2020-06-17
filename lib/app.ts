@@ -9,7 +9,7 @@ import cicd = require('@aws-cdk/app-delivery');
 const app = new cdk.App();
  
 // We define a stack that contains the CodePipeline
-const pipelineStack = new cdk.Stack(app, 'PipelineStack');
+const pipelineStack = new cdk.Stack(app, 'AmplifyImageBuildPipelineStack');
 const pipeline = new codepipeline.Pipeline(pipelineStack, 'CodePipeline', {
   // Mutating a CodePipeline can cause the currently propagating state to be
   // "lost". Ensure we re-run the latest change through the pipeline after it's

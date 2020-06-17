@@ -1,6 +1,5 @@
 import cdk = require('@aws-cdk/core');
 import codebuild = require('@aws-cdk/aws-codebuild');
-import codecommit = require('@aws-cdk/aws-codecommit');
 import codepipeline = require('@aws-cdk/aws-codepipeline');
 import codepipeline_actions = require('@aws-cdk/aws-codepipeline-actions');
 import ecr = require('@aws-cdk/aws-ecr');
@@ -34,7 +33,7 @@ export class AmplifyImageBuild extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY
     });
 
-    const supportedVersions = [{AmplifyVersion: "4.15.9", branch: "mainline", useTag: true}];
+    const supportedVersions = [{AmplifyVersion: "latest", branch: "mainline", useTag: true}];
 
     supportedVersions.forEach(supportedVersion => {
       const AmplifyVersion = supportedVersion.AmplifyVersion;
@@ -66,7 +65,7 @@ export class AmplifyImageBuild extends cdk.Stack {
           AWS_DEFAULT_REGION: { value: this.region },
           VERSION: { value: AmplifyVersion },
           STAGE: { value: props.stage },
-          Amplify_VERSION: { value: supportedVersion.useTag ? 'v' + AmplifyVersion : AmplifyVersion}
+          Amplify_VERSION: { value: supportedVersion.useTag ? 'v' + AmplifyVersion : AmplifyVersion }
         }
       });
 
@@ -92,7 +91,5 @@ export class AmplifyImageBuild extends cdk.Stack {
         ]
       })
     });
-
-
   }
 }
