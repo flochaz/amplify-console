@@ -22,5 +22,5 @@ phases:
       - docker push $REPOSITORY_URI:$SHORT_VERSION_TAG
       - docker push $REPOSITORY_URI:$VERSION_TAG
       - echo Build completed on `date`
-  exported_variables:
+  exported-variables:
     - VERSION_TAG
