@@ -12,7 +12,9 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:latest amplifyimage
+      - echo $REPOSITORY_URI
+      - ls
+      - docker build -t $REPOSITORY_URI:latest images/latest
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$VERSION_TAG
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$SHORT_VERSION_TAG
   post_build:
