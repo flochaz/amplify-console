@@ -28,8 +28,8 @@ export class AmplifyImageBuild extends cdk.Stack {
     });
 
 
-    const amplifyImageEcr = new ecr.Repository(this, 'Amplify-base-images', {
-      repositoryName: 'Amplify-base-images',
+    const amplifyImageEcr = new ecr.Repository(this, 'Amplify-build-images', {
+      repositoryName: 'amplify-build-images',
       removalPolicy: cdk.RemovalPolicy.DESTROY
     });
 
