@@ -6,7 +6,7 @@ phases:
       - echo Logging into Docker
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - VERSION_TAG="$VERSION-$CODEBUILD_BUILD_NUMBER.sha.$COMMIT_HASH"
+      - VERSION_TAG="$AMPLIFY_IMAGE_VERSION-$CODEBUILD_BUILD_NUMBER.sha.$COMMIT_HASH"
       - SHORT_VERSION_TAG="$AMPLIFY_IMAGE_VERSION-sha.$COMMIT_HASH"
   build:
     commands:
@@ -20,7 +20,7 @@ phases:
   post_build:
     commands:
       - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$AMPLIFY_IMAGE_VERSION
       - docker push $REPOSITORY_URI:$SHORT_VERSION_TAG
       - docker push $REPOSITORY_URI:$VERSION_TAG
       - echo Build completed on `date`
