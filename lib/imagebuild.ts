@@ -33,7 +33,7 @@ export class AmplifyImageBuild extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY
     });
 
-    const supportedVersions = [{AmplifyVersion: "latest", branch: "mainline", useTag: true}];
+    const supportedVersions = [{AmplifyVersion: "latest", useTag: true}, {AmplifyVersion: "amazonlinux1", useTag: true}];
 
     supportedVersions.forEach(supportedVersion => {
       const AmplifyVersion = supportedVersion.AmplifyVersion;
@@ -59,11 +59,11 @@ export class AmplifyImageBuild extends cdk.Stack {
           privileged: true
         },
         cache: supportedVersion.useTag ? codebuild.Cache.local(codebuild.LocalCacheMode.DOCKER_LAYER) : codebuild.Cache.none(),
-        buildSpec: codebuild.BuildSpec.fromSourceFilename('images/latest/buildspec.yml'),
+        buildSpec: codebuild.BuildSpec.fromSourceFilename('images/buildspec.yml'),
         environmentVariables: {
           REPOSITORY_URI: { value: amplifyImageEcr.repositoryUri },
           AWS_DEFAULT_REGION: { value: this.region },
-          VERSION: { value: AmplifyVersion },
+          AMPLIFY_IMAGE_VERSION: { value: AmplifyVersion },
           STAGE: { value: props.stage },
           Amplify_VERSION: { value: supportedVersion.useTag ? 'v' + AmplifyVersion : AmplifyVersion }
         }
