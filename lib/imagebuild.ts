@@ -3,13 +3,11 @@ import codebuild = require('@aws-cdk/aws-codebuild');
 import codepipeline = require('@aws-cdk/aws-codepipeline');
 import codepipeline_actions = require('@aws-cdk/aws-codepipeline-actions');
 import ecr = require('@aws-cdk/aws-ecr');
-import s3 = require('@aws-cdk/aws-s3');
 
 /** This stack handles the building and publishing of Amplify images. */
 // If you want to add parameters for your CDK Stack, you can toss them in here
 export interface ImageBuildProps {
   readonly stackName?: string;
-  readonly stage: string;
   /**
    * Stack tags that will be applied to all the taggable resources and the stack itself.
    *
@@ -64,7 +62,6 @@ export class AmplifyImageBuild extends cdk.Stack {
           REPOSITORY_URI: { value: amplifyImageEcr.repositoryUri },
           AWS_DEFAULT_REGION: { value: this.region },
           AMPLIFY_IMAGE_VERSION: { value: AmplifyVersion },
-          STAGE: { value: props.stage },
           Amplify_VERSION: { value: supportedVersion.useTag ? 'v' + AmplifyVersion : AmplifyVersion }
         }
       });

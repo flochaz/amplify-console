@@ -62,7 +62,7 @@ selfUpdateStage.addAction(new cicd.PipelineDeployStackAction({
  
 // Now add our service stacks
 const deployStage = pipeline.addStage({ stageName: 'Deploy' });
-const imageBuildStack = new AmplifyImageBuild(app, 'AmplifyImageBuild', {stage: "alpha"});
+const imageBuildStack = new AmplifyImageBuild(app, 'AmplifyImageBuild', {});
 // Add actions to deploy the stacks in the deploy stage:
 const deployImageBuildServiceAction = new cicd.PipelineDeployStackAction({
   stack: imageBuildStack,
