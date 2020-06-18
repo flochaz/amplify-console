@@ -7,7 +7,7 @@ phases:
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - VERSION_TAG="$VERSION-$CODEBUILD_BUILD_NUMBER.sha.$COMMIT_HASH"
-      - SHORT_VERSION_TAG="$VERSION-sha.$COMMIT_HASH"
+      - SHORT_VERSION_TAG="$AMPLIFY_IMAGE_VERSION-sha.$COMMIT_HASH"
   build:
     commands:
       - echo Build started on `date`
