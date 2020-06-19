@@ -1,0 +1,75 @@
+#!/bin/bash
+
+help_output () {
+    echo "usage: ecache [--get|-g <key>] [--set|-s <key> <value>]"
+    echo "  --get   retrieve an existing value"
+    echo "  --set   set a new key-value pair"
+    echo "               keys must be alphanumeric"
+    exit 1
+}
+
+get_var () {
+    val=$(grep ${search} ${filepath} | cut -d'|' -f2)
+    echo "$val" | base64 --decode
+}
+
+set_var () {
+    # SET request, set the new key|value
+    # Encode the value to prevent formatting issues
+    encval=$(echo -e "$VALUE" | base64 -w 0)
+    grep -q ${search} ${filepath}
+    if [[ $? -eq 1 ]]
+        # Write new key with value
+        then echo "${KEY}|${encval}" >> ${filepath}
+    elif [[ -z "$VALUE" ]]
+        # Empty value, clear key
+        then sed -ie "/$search/d" ${filepath}
+    else
+        # Update existing key entry with new value
+        sed -ie "s/$search/$KEY|$encval/g" ${filepath}
+    fi
+}
+
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+    do
+    key="$1"
+    case ${key} in
+        -g|--get)
+        if [[ -n "$OP" ]] ; then help_output ; fi
+        OP="GET"
+        KEY=$2
+        shift
+        ;;
+        -s|--set)
+        if [[ -n "$OP" ]] ; then help_output ; fi
+        OP="SET"
+        KEY=$2
+        VALUE=$3
+        shift
+        ;;
+        *)
+        POSITIONAL+=("$1")
+        shift
+        ;;
+    esac
+done
+set -- "${POSITIONAL[@]}"
+
+# Check valid key
+if [[ "$KEY" =~ [^a-zA-Z0-9]+ ]] ; then help_output ; fi
+
+# Make sure the key and operation are set
+if [[ -z "$KEY" || -z "$OP" ]] ; then help_output ; fi
+
+filepath="/tmp/ecache_data.txt"
+search="^$KEY|.*$"
+
+# Create file if it doesn't exists
+if [[ !-e ]] ; then touch ${filepath} ; fi
+
+if [[ "$OP" = "GET" ]] ;
+    then get_var
+elif [[ "$OP" = "SET" ]] ;
+    then set_var
+fi
