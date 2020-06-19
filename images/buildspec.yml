@@ -15,8 +15,8 @@ phases:
       - echo $REPOSITORY_URI
       - ls
       - docker build -t $REPOSITORY_URI:$AMPLIFY_IMAGE_VERSION images/$AMPLIFY_IMAGE_VERSION
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$VERSION_TAG
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$SHORT_VERSION_TAG
+      - docker tag $REPOSITORY_URI:$AMPLIFY_IMAGE_VERSION $REPOSITORY_URI:$VERSION_TAG
+      - docker tag $REPOSITORY_URI:$AMPLIFY_IMAGE_VERSION $REPOSITORY_URI:$SHORT_VERSION_TAG
   post_build:
     commands:
       - echo Pushing the Docker images...
