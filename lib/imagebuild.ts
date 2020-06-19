@@ -31,7 +31,7 @@ export class AmplifyImageBuild extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY
     });
 
-    const supportedVersions = ["latest",  "amazonlinux1"];
+    const supportedVersions = ["latest",  "amazonlinux1", "custom"];
 
     supportedVersions.forEach(supportedVersion => {
       const AmplifyVersion = supportedVersion;

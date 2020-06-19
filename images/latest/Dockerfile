@@ -69,6 +69,7 @@ RUN yum -y update && \
         zip \
         zlib \
         zlib-devel \
+        jq \
     yum clean all && \
     rm -rf /var/cache/yum
 
