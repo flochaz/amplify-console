@@ -18,6 +18,7 @@ RUN yum -y install \
       tar \
       zip \
       gzip \
+      wget \
     yum clean all && \
     rm -rf /var/cache/yum
 
