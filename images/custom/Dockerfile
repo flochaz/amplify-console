@@ -18,11 +18,19 @@ RUN yum -y install \
       tar \
       zip \
       gzip \
-      python3 \
-      python3-devel \
     yum clean all && \
     rm -rf /var/cache/yum
 
+RUN yum install -y gcc openssl-devel bzip2-devel libffi-devel jq
+RUN wget https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tgz
+RUN tar xzf Python-3.8.2.tgz
+RUN cd Python-3.8.2
+RUN ./configure --enable-optimizations
+RUN make altinstall
+RUN rm /usr/bin/python3
+RUN ln -s /usr/local/bin/python3.8 /usr/local/bin/python3
+RUN ln -s /usr/local/bin/python3.8 /usr/bin/python3
+RUN curl -O https://bootstrap.pypa.io/get-pip.py
 
 ## Install Node 10
 #RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
