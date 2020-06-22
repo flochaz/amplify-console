@@ -48,11 +48,6 @@ RUN echo "nvm use ${VERSION_NODE} 1> /dev/null" >> ~/.bashrc
 ## Install awscli
 RUN /bin/bash -c "pip3 install awscli && rm -rf /var/cache/apk/*"
 
-COPY envCache /usr/local/bin
-RUN chmod +x /usr/local/bin/envCache
-COPY amplifyPush /usr/local/bin
-RUN chmod +x /usr/local/bin/amplifyPush
-
 RUN source ~/.bashrc
 
 ENTRYPOINT [ "bash", "-c" ]
