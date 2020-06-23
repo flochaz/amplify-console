@@ -1,7 +1,6 @@
 # Use the standard Amazon Linux base, provided by ECR/KaOS
 # It points to the standard shared Amazon Linux image, with a versioned tag.
 FROM amazonlinux:2
-MAINTAINER Amazon AWS
 
 # Framework Versions
 ENV VERSION_NODE=10.16.3
@@ -45,6 +44,7 @@ RUN /bin/bash -c ". ~/.nvm/nvm.sh && nvm use ${VERSION_NODE} && \
 RUN /bin/bash -c ". ~/.nvm/nvm.sh && nvm use ${VERSION_NODE} && \
     npm install -g typescript && \
     npm install -g @angular/cli && \
+    npm install -g yarn && \
     npm install -g @angular-devkit/build-angular" 
 
 
@@ -62,7 +62,7 @@ RUN ./configure --enable-optimizations && \
 RUN ln -s /usr/local/bin/python3.8 /usr/local/bin/python3
 RUN ln -s /usr/local/bin/pip3.8 /usr/local/bin/pip3
 
-RUN /bin/bash -c "pip3 install pipenv"
+RUN /bin/bash -c "pip3 install --user pipenv"
 
 ## Environment Setup
 RUN echo "nvm use ${VERSION_NODE} 1> /dev/null" >> ~/.bashrc
