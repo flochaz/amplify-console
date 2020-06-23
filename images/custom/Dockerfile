@@ -57,8 +57,7 @@ RUN wget https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tgz && \
 WORKDIR /Python-3.8.2
 
 RUN ./configure --enable-optimizations && \
-    make altinstall && \
-    pip3 install --upgrade pip
+    make altinstall
 
 RUN ln -s /usr/local/bin/python3.8 /usr/local/bin/python3
 RUN ln -s /usr/local/bin/pip3.8 /usr/local/bin/pip3
