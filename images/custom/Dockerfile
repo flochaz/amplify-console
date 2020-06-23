@@ -62,6 +62,8 @@ RUN ./configure --enable-optimizations && \
 RUN ln -s /usr/local/bin/python3.8 /usr/local/bin/python3
 RUN ln -s /usr/local/bin/pip3.8 /usr/local/bin/pip3
 
+RUN pip3 install --user pipenv
+
 ## Environment Setup
 RUN echo "nvm use ${VERSION_NODE} 1> /dev/null" >> ~/.bashrc
 
