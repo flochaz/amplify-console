@@ -13,35 +13,21 @@ ENV LC_ALL en_US.UTF-8
 
 ## Install OS packages
 RUN touch ~/.bashrc
-RUN yum -y install \
-      gcc \
-      openssl-devel \
-      bzip2-devel \
-      libffi-devel \
-      python-configobj \
-      jq \
-      tar \
-      zip \
-      gzip \
-      git \
+RUN yum  -y install \
+        jq \
+        zip \
+        gcc \
+        openssl-devel \
+        bzip2-devel \
+        libffi-devel \
+        wget \
+        tar \
+        gzip \
+        make && \
     yum clean all && \
     rm -rf /var/cache/yum
 
 
-##python
-RUN curl https://pyenv.run | bash
-ENV PATH="/root/.pyenv/shims:/root/.pyenv/bin:$PATH"
-
-#Python 3.8
-ENV PYTHON_38_VERSION="3.8.3"
-
-COPY tools/runtime_configs/python/$PYTHON_38_VERSION /root/.pyenv/plugins/python-build/share/python-build/$PYTHON_38_VERSION
-RUN   env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install $PYTHON_38_VERSION; rm -rf /tmp/*
-RUN   pyenv global  $PYTHON_38_VERSION
-RUN set -ex \
-    && pip3 install --no-cache-dir --upgrade --force-reinstall "pip==$PYTHON_PIP_VERSION" \
-    && pip3 install --no-cache-dir --upgrade "PyYAML==5.3.1" \
-    && pip3 install --no-cache-dir --upgrade setuptools wheel aws-sam-cli awscli boto3 pipenv virtualenv
 
 ## Install Node 10
 #RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
@@ -60,6 +46,22 @@ RUN /bin/bash -c ". ~/.nvm/nvm.sh && nvm use ${VERSION_NODE} && \
     npm install -g typescript && \
     npm install -g @angular/cli && \
     npm install -g @angular-devkit/build-angular" 
+
+
+WORKDIR /
+
+# Install Python 3.8
+RUN wget https://www.python.org/ftp/python/3.8.0/Python-3.8.0.tgz && \
+    tar -xzvf Python-3.8.0.tgz
+
+WORKDIR /Python-3.8.0
+
+RUN ./configure --enable-optimizations && \
+    make altinstall && \
+    pip3 install --upgrade pip
+
+RUN ln -s /usr/local/bin/python3.8 /usr/local/bin/python3
+RUN ln -s /usr/local/bin/pip3.8 /usr/local/bin/pip3
 
 ## Environment Setup
 RUN echo "nvm use ${VERSION_NODE} 1> /dev/null" >> ~/.bashrc
