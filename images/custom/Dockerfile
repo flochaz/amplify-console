@@ -23,15 +23,25 @@ RUN yum -y install \
     rm -rf /var/cache/yum
 
 RUN yum install -y gcc openssl-devel bzip2-devel libffi-devel jq
-RUN wget https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tgz
-RUN tar xzf Python-3.8.2.tgz
-RUN cd Python-3.8.2
-RUN ./configure --enable-optimizations
-RUN make altinstall
-RUN rm /usr/bin/python3
-RUN ln -s /usr/local/bin/python3.8 /usr/local/bin/python3
-RUN ln -s /usr/local/bin/python3.8 /usr/bin/python3
-RUN curl -O https://bootstrap.pypa.io/get-pip.py
+RUN /bin/bash -c "wget https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tgz && \
+ tar xzf Python-3.8.2.tgz && \
+ cd Python-3.8.2 && \
+ ./configure --enable-optimizations  && \
+ make altinstall  && \
+ rm /usr/bin/python3 && \
+ ln -s /usr/local/bin/python3.8 /usr/local/bin/python3 && \
+ ln -s /usr/local/bin/python3.8 /usr/bin/python3 && \
+ curl -O https://bootstrap.pypa.io/get-pip.py && \
+ ./configure --enable-optimizations && \
+ make altinstall && \
+ rm /usr/bin/python3 && \
+ ln -s /usr/local/bin/python3.8 /usr/local/bin/python3 && \
+ ln -s /usr/local/bin/python3.8 /usr/bin/python3 && \
+ curl -O https://bootstrap.pypa.io/get-pip.py && \
+ python3 get-pip.py && \
+ pip install --user pipenv && \
+ pip install awscli && \
+ cd .."
 
 ## Install Node 10
 #RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
