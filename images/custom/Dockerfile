@@ -1,6 +1,6 @@
 # Use the standard Amazon Linux base, provided by ECR/KaOS
 # It points to the standard shared Amazon Linux image, with a versioned tag.
-FROM amazonlinux:2
+FROM aws/codebuild/amazonlinux2-x86_64-standard:3.0	
 MAINTAINER Amazon AWS
 
 # Framework Versions
@@ -18,30 +18,8 @@ RUN yum -y install \
       tar \
       zip \
       gzip \
-      wget \
     yum clean all && \
     rm -rf /var/cache/yum
-
-RUN yum install -y gcc openssl-devel bzip2-devel libffi-devel jq
-RUN /bin/bash -c "wget https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tgz && \
- tar xzf Python-3.8.2.tgz && \
- cd Python-3.8.2 && \
- ./configure --enable-optimizations  && \
- make altinstall  && \
- rm /usr/bin/python3 && \
- ln -s /usr/local/bin/python3.8 /usr/local/bin/python3 && \
- ln -s /usr/local/bin/python3.8 /usr/bin/python3 && \
- curl -O https://bootstrap.pypa.io/get-pip.py && \
- ./configure --enable-optimizations && \
- make altinstall && \
- rm /usr/bin/python3 && \
- ln -s /usr/local/bin/python3.8 /usr/local/bin/python3 && \
- ln -s /usr/local/bin/python3.8 /usr/bin/python3 && \
- curl -O https://bootstrap.pypa.io/get-pip.py && \
- python3 get-pip.py && \
- pip install --user pipenv && \
- pip install awscli && \
- cd .."
 
 ## Install Node 10
 #RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
