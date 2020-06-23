@@ -51,10 +51,10 @@ RUN /bin/bash -c ". ~/.nvm/nvm.sh && nvm use ${VERSION_NODE} && \
 WORKDIR /
 
 # Install Python 3.8
-RUN wget https://www.python.org/ftp/python/3.8.0/Python-3.8.0.tgz && \
-    tar -xzvf Python-3.8.0.tgz
+RUN wget https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tgz && \
+    tar -xzvf Python-3.8.2.tgz
 
-WORKDIR /Python-3.8.0
+WORKDIR /Python-3.8.2
 
 RUN ./configure --enable-optimizations && \
     make altinstall && \
